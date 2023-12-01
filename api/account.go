@@ -32,6 +32,8 @@ func (server *Server) createAccount(ctx *gin.Context) {
 		return
 	}
 
+	account = db.Account{}
+
 	ctx.JSON(http.StatusOK, account)
 
 }
