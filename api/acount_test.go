@@ -86,6 +86,7 @@ func TestGetAccountAPI(t *testing.T) {
 		defer ctrl.Finish()
 
 		t.Run(tc.name, func(t *testing.T) {
+
 			store := mockdb.NewMockStore(ctrl)
 			tc.buildStubs(store)
 
