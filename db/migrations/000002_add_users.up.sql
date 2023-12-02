@@ -34,34 +34,12 @@ CREATE TABLE
         "created_at" timestamptz NOT NULL DEFAULT (now())
     );
 
-CREATE INDEX ON "accounts" ("owner");
-
-CREATE UNIQUE INDEX ON "accounts" ("owner", "currency");
-
-CREATE INDEX ON "entries" ("account_id");
-
-CREATE INDEX ON "transfer" ("from_account_id");
-
-CREATE INDEX ON "transfer" ("to_account_id");
-
-CREATE INDEX ON "transfer" ( "from_account_id", "to_account_id" );
-
-COMMENT ON COLUMN "entries"."amount" IS 'can be negative or positive';
-
-COMMENT ON COLUMN "transfer"."amount" IS 'it must be positive';
-
 ALTER TABLE "accounts"
 ADD
     FOREIGN KEY ("owner") REFERENCES "users" ("username");
 
-ALTER TABLE "entries"
-ADD
-    FOREIGN KEY ("account_id") REFERENCES "accounts" ("id");
+-- CREATE UNIQUE INDEX ON "accounts" ("owner", "currency");
 
-ALTER TABLE "transfer"
+ALTER TABLE "accounts"
 ADD
-    FOREIGN KEY ("from_account_id") REFERENCES "accounts" ("id");
-
-ALTER TABLE "transfer"
-ADD
-    FOREIGN KEY ("to_account_id") REFERENCES "accounts" ("id");
+    CONSTRAINT "owner_currency_key" UNIQUE ("owner", "currency");
