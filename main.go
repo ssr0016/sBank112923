@@ -2,13 +2,12 @@ package main
 
 import (
 	"database/sql"
-
-	"github/ssr0016/simpleBank/api"
-	db "github/ssr0016/simpleBank/db/sqlc"
-	"github/ssr0016/simpleBank/util"
 	"log"
 
 	_ "github.com/lib/pq"
+	"github/ssr0016/simpleBank/api"
+	db "github/ssr0016/simpleBank/db/sqlc"
+	"github/ssr0016/simpleBank/util"
 )
 
 func main() {
@@ -23,7 +22,10 @@ func main() {
 	}
 
 	store := db.NewStore(conn)
-	server := api.NewServer(store)
+	server, err := api.NewServer(config, store)
+	if err != nil {
+		log.Fatal("cannot create server:", err)
+	}
 
 	err = server.Start(config.ServerAddress)
 	if err != nil {

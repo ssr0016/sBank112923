@@ -10,13 +10,13 @@ import (
 	"reflect"
 	"testing"
 
+	mockdb "github/ssr0016/simpleBank/db/mock"
+	db "github/ssr0016/simpleBank/db/sqlc"
+	"github/ssr0016/simpleBank/util"
 	"github.com/gin-gonic/gin"
 	"github.com/golang/mock/gomock"
 	"github.com/lib/pq"
 	"github.com/stretchr/testify/require"
-	mockdb "github/ssr0016/simpleBank/db/mock"
-	db "github/ssr0016/simpleBank/db/sqlc"
-	"github/ssr0016/simpleBank/util"
 )
 
 type eqCreateUserParamsMatcher struct {
@@ -179,7 +179,7 @@ func TestCreateUserAPI(t *testing.T) {
 			store := mockdb.NewMockStore(ctrl)
 			tc.buildStubs(store)
 
-			server := NewServer(store)
+			server := NewTestServer(t, store)
 			recorder := httptest.NewRecorder()
 
 			//Marshal body to JSON
